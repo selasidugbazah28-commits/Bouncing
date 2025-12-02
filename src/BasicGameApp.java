@@ -15,7 +15,10 @@ public class BasicGameApp implements Runnable {
     //You can set their initial values too
     // Like Mario mario = new Mario(); //
     Tenis tenis;
+    Racket racket;
     Image background;
+
+
 
 
 
@@ -27,10 +30,15 @@ public class BasicGameApp implements Runnable {
 
         //variable and objects
         //create (construct) the objects needed for the game
-        tenis = new Tenis(500,350,1.5,1.5,70,70);
+        tenis = new Tenis(500,350,4,4,70,70);
         tenis.name = "Tenis Tenis";
-        tenis.image = Toolkit.getDefaultToolkit().getImage("Mario.png");
-        background = Toolkit.getDefaultToolkit().getImage("background.jpg");
+        tenis.aliveimage = Toolkit.getDefaultToolkit().getImage("Tenis.jpg");
+        tenis.deadimage = Toolkit.getDefaultToolkit().getImage("HitBall.jpeg");
+
+        racket = new Racket (300, 400, 1.5, 1.5, 130, 130 );
+        racket.image = Toolkit.getDefaultToolkit().getImage("Racket.jpg");
+        background = Toolkit.getDefaultToolkit().getImage("TenisCourt.png");
+
 
 
     }
@@ -39,6 +47,24 @@ public class BasicGameApp implements Runnable {
     public void moveThings() {
         //call the move() code for each object  -
         tenis.move();
+        racket.move();
+
+    }
+
+    public void checkCollisions(){
+        //System.out.println(tenis.hitbox);
+        //System.out.println(racket.hitbox);
+        if (tenis.hitbox.intersects(racket.hitbox) ){
+            System.out.println("You have hit the ball");
+            tenis.isAlive = false;
+            tenis.dx = -tenis.dx;
+            racket.dx = -racket.dx;
+            tenis.dy = -tenis.dy;
+            racket.dy= -racket.dy;
+        }
+        else {
+            tenis.isAlive = true;
+        }
 
     }
 
@@ -50,7 +76,13 @@ public class BasicGameApp implements Runnable {
         //draw the images
         // Signature: drawImage(Image img, int x, int y, int width, int height, ImageObserver observer)
         g.drawImage(background, 0, 0, WIDTH, HEIGHT, null);
-        g.drawImage(tenis.image, tenis.xpos, tenis.ypos, tenis.width, tenis.height, null);
+        if (tenis.isAlive) {
+            g.drawImage(tenis.aliveimage, tenis.xpos, tenis.ypos, tenis.width, tenis.height, null);
+        }
+        else {
+            g.drawImage(tenis.deadimage,tenis.xpos, tenis.ypos, tenis.width, tenis.height, null );
+        }
+        g.drawImage(racket.image, racket.xpos, racket.ypos, racket.width, racket.height, null);
 
 
 
@@ -92,6 +124,7 @@ public class BasicGameApp implements Runnable {
         //for the moment we will loop things forever.
         while (true) {
             moveThings();  //move all the game objects
+            checkCollisions();
             render();  // paint the graphics
             pause(10); // sleep for 10 ms
         }

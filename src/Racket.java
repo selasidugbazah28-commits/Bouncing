@@ -1,9 +1,8 @@
 import java.awt.*;
 
-public class Tenis {
+public class Racket {
     String name;
-    Image aliveimage;
-    Image deadimage;
+    Image image;
     int xpos;
     int ypos;
     int speed;
@@ -12,13 +11,12 @@ public class Tenis {
     int width;
     int height;
     Rectangle hitbox;
-    boolean isAlive = true;
 
-    public Tenis(){
+    public Racket(){
         hitbox = new Rectangle(xpos, ypos, width, height); // convention of making a rectangle
     }
 
-    public Tenis(int xposInput, int yposInput, double dxInput, double dyInput, int widthInput, int heightInput){
+    public Racket(int xposInput, int yposInput, double dxInput, double dyInput, int widthInput, int heightInput){
         xpos = xposInput;
         ypos = yposInput;
         dx = dxInput;
